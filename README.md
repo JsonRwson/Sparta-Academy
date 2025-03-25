@@ -73,6 +73,7 @@ git checkout feature-xyz   # Switch to the new branch
 git checkout main   # Switch back to main branch
 git merge feature-xyz   # Merge feature into main
 git branch -d feature-xyz   # Delete the feature branch
+git remote set-url origin <your-ssh-repo-url> # Set up SSH
 ```
 
 
@@ -85,6 +86,7 @@ git remote add origin <repo_url>   # Link local repo to GitHub
 git push -u origin main   # Push local repo to GitHub
 git pull origin main   # Fetch latest changes from GitHub
 git clone <repo_url>   # Clone an existing GitHub repo
+git@github.com:JsonRwson/Git-GitHub-Notes.git
 ```
 - Use **Pull Requests (PRs)** to propose and review changes before merging.
 - Use **GitHub Issues** to track bugs and tasks.
