@@ -1,0 +1,10 @@
+cd ~
+Changing directory to tilda will take you to the user's home directory
+
+cd /
+Changing directory to / will take you to the root directory
+
+cd .. Going up a directory
+
+ls -a
+show all files including hidden ones
