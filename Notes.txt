@@ -8,3 +8,12 @@ cd .. Going up a directory
 
 ls -a
 show all files including hidden ones
+
+git remote add origin https://github.com/JsonRwson/Git-GitHub-Notes.git
+git branch -M main
+git push -u origin main
+
+Add the remote repository
+Rename the master branch to main
+Push changes to the remote repository
+-u means push to this specific place, better to specify
