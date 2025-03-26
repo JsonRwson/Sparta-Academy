@@ -14,7 +14,6 @@
     - [Example Workflow](#example-workflow)
   - [GitHub](#github)
     - [Common GitHub Tasks](#common-github-tasks)
-  - [Useful Bash Commands](#useful-bash-commands)
   - [Useful Git Commands](#useful-git-commands)
   - [Git Workflow Diagram](#git-workflow-diagram)
 
@@ -90,23 +89,6 @@ git clone <repo_url>   # Clone an existing GitHub repo
 - Use **Pull Requests (PRs)** to propose and review changes before merging.
 - Use **GitHub Issues** to track bugs and tasks.
 - Use **GitHub Actions** to automate workflows.
-
-
-## Useful Bash Commands
-| Command | Description |
-|---------|-------------|
-| `pwd` | Print working directory |
-| `ls` | List files and directories |
-| `cd <dir>` | Change directory |
-| `mkdir <dir>` | Create a new directory |
-| `rm <file>` | Remove a file |
-| `rm -r <dir>` | Remove a directory recursively |
-| `cp <source> <destination>` | Copy a file or directory |
-| `mv <source> <destination>` | Move or rename a file or directory |
-| `cat <file>` | View the contents of a file |
-| `echo "text" > file.txt` | Write text to a file |
-| `touch <file>` | Create an empty file |
-| `grep "pattern" <file>` | Search for a pattern in a file |
 
 
 ## Useful Git Commands
