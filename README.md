@@ -93,23 +93,6 @@ git@github.com:JsonRwson/Git-GitHub-Notes.git
 - Use **GitHub Actions** to automate workflows.
 
 
-## Useful Bash Commands
-| Command | Description |
-|---------|-------------|
-| `pwd` | Print working directory |
-| `ls` | List files and directories |
-| `cd <dir>` | Change directory |
-| `mkdir <dir>` | Create a new directory |
-| `rm <file>` | Remove a file |
-| `rm -r <dir>` | Remove a directory recursively |
-| `cp <source> <destination>` | Copy a file or directory |
-| `mv <source> <destination>` | Move or rename a file or directory |
-| `cat <file>` | View the contents of a file |
-| `echo "text" > file.txt` | Write text to a file |
-| `touch <file>` | Create an empty file |
-| `grep "pattern" <file>` | Search for a pattern in a file |
-
-
 ## Useful Git Commands
 ```sh
 git rm --cached <file>   # Unstage a file
