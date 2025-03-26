@@ -1,62 +1,136 @@
 # BASH Cheatsheet
 
-BASH = Born Again Shell
+## Contents
+1. [What is BASH?](#what-is-bash)
+2. [User & System Information Commands](#user--system-information-commands)
+3. [Root & User Management](#root--user-management)
+4. [File & Directory Management](#file--directory-management)
+5. [File Viewing & Editing](#file-viewing--editing)
+6. [Downloading Files](#downloading-files)
+7. [Package Management (`apt`)](#package-management-apt)
+8. [Special Characters in BASH](#special-characters-in-bash)
+9. [Summary of Useful Commands](#summary-of-useful-commands)
 
-Linux does not care about file extensions
-if you rename a cat.jpg to cat.txt, it will still be a jpg
+## What is BASH?
 
-Case sensitivity is important
+**BASH** = **Bourne Again Shell**  
+A command-line shell and scripting language for Unix/Linux systems.
 
-Tab auto fill 
+### Key Concepts:
+- **Linux does not care about file extensions**  
+  - Renaming `cat.jpg` to `cat.txt` does not change its actual type.
+- **Case Sensitivity Matters**  
+  - `FILE.txt` and `file.txt` are different files.
+- **Tab Autocomplete**  
+  - Press `Tab` while typing a command or filename to auto-fill it.
+- **Pipes (`|`)**  
+  - Used to pass output from one command to another.
 
-| pipe is used to join commands into one
+## User & System Information Commands
 
-root is the super user
-to elevate our privilleges temporarily for a command, use sudo
+| Command       | Description                                       |
+|--------------|---------------------------------------------------|
+| `whoami`      | Displays the current username                     |
+| `uname`       | Shows system information                          |
+| `history`     | Displays all commands run in this session         |
+| `history -c`  | Clears command history                            |
+| `!<id>`       | Runs a previously used command from history       |
+| `clear`       | Clears the terminal screen                        |
+| `ps -p $$`    | Displays the current shell being used             |
+| `pwd`         | Prints the present working directory              |
 
-`whoami` = gives the current user name
-`uname` = gives system info
-`history` = shows all commands run in this shell session
-`clear` = clear the terminal
-`man command` = access the manual on how to use a command
-`--help` = add onto end of a command for usage
-`cat` = print out the contents of a file
-`head -2 chicken.txt` = print out specific number of lines from the start of a file
-`tail -2 chicken.txt` = print out specific number of lines from the end of file
-`ps -p $$` = what shell am i currently using
-`history` = last 500 commands used
-`history -c` = clear last commands used
-    `!command id from history` = run a previousl;y used command
-`ls` = show files in current directory
-`ls -al` = show files in current directory, includes hidden files, shows long format
-`curl` = a terminal http client
-`curl imgurl --output filename` = download file to given location/name
-`wget` = specifically used to download files and folders
-`wget url -O filename` = download file to given location/name
-`file filename` = gives info about a file and its type
-`mv` = move, can be used to rename a file too
-`mv cat.jp cat2.jp` = renaming cat to cat2
-`cp` = copy
-`cp cat.txt cat.jpg` = copy cat.txt as cat.jpg, both images
-`rm` = remove a file
-`rm -r directory` = remove a directory, -r recursively removes all files
-`mkdir` = make a directory
-`touch filename` = make an empty file
-`nano file` = command line text editor
-`nl filename` = show number of lines in a file
-`cat chickenjoke.txt | grep chicken` = only give lines that contain chicken
-`grep`
-`apt` = a package manager to install/update/delete packages
-`apt install tree` = install the tree package - wont work
-`sudo apt install tree` = install the tree package with elevated privilleges
-`sudo apt update -y` = update the known installable packages, download but not install them
-Ensures we have the latest packages and confirms access to the internet
-`-y` = answer yes to any confirmations
-`sudo apt upgrade` = upgrades all installed packages on your system to the latest versions available
-This is dangerous to do 
-`pwd` present working directory
-`sudo su username` = switch to user, provide no name defaults to super user
+## Root & User Management
 
-Directories
-Home - home directory
-Root - root of the system
+- **`root`** = Superuser with all system privileges.
+- **To run a command with elevated privileges:**  
+  ```bash
+  sudo <command>
+  ```
+- **Switch user:**  
+  ```bash
+  sudo su <username>
+  ```
+  - Running `sudo su` without a username switches to root.
+
+## File & Directory Management
+
+| Command                    | Description                                                       |
+|----------------------------|-------------------------------------------------------------------|
+| `ls`                       | Lists files in the current directory                              |
+| `ls -al`                   | Lists all files (including hidden) in long format                |
+| `pwd`                      | Displays the present working directory                            |
+| `mkdir <directory>`        | Creates a new directory                                          |
+| `rmdir <directory>`        | Removes an empty directory                                       |
+| `rm <file>`                | Deletes a file                                                  |
+| `rm -r <directory>`        | Recursively deletes a directory and its contents                |
+| `mv <source> <destination>`| Moves or renames a file/directory                               |
+| `cp <source> <destination>`| Copies a file/directory                                         |
+| `touch <filename>`         | Creates an empty file                                           |
+
+## File Viewing & Editing
+
+| Command                          | Description                                               |
+|----------------------------------|-----------------------------------------------------------|
+| `cat <file>`                     | Displays the contents of a file                           |
+| `nl <file>`                      | Displays file contents with line numbers                  |
+| `head -n <num> <file>`           | Shows the first `n` lines of a file                       |
+| `tail -n <num> <file>`           | Shows the last `n` lines of a file                        |
+| `nano <file>`                    | Opens the file in the `nano` text editor                  |
+| `file <filename>`                | Shows file type and metadata                              |
+| `grep <pattern> <file>`          | Searches for a pattern in a file                          |
+
+_Example:_  
+```bash
+cat jokes.txt | grep chicken
+```
+This command searches for the word "chicken" in `jokes.txt` and displays the matching lines.
+
+## Downloading Files
+
+| Command                              | Description                                                |
+|--------------------------------------|------------------------------------------------------------|
+| `curl <url>`                         | Fetches data from a URL                                    |
+| `curl <url> --output <filename>`     | Downloads and saves a file with a specified name           |
+| `wget <url>`                         | Downloads a file from the internet                         |
+| `wget <url> -O <filename>`           | Downloads and saves a file under a new name                |
+
+_Example:_  
+```bash
+wget https://example.com/file.txt -O myfile.txt
+```
+
+## Package Management (`apt`)
+
+| Command                        | Description                                           |
+|--------------------------------|-------------------------------------------------------|
+| `apt update`                   | Updates the list of available packages              |
+| `apt upgrade`                  | Upgrades all installed packages                      |
+| `apt install <package>`        | Installs a package                                   |
+| `apt remove <package>`         | Removes a package                                   |
+
+### Using `sudo`
+Most package management commands require elevated privileges:
+```bash
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install tree
+```
+- The `-y` flag automatically confirms any prompts.
+
+## Special Characters in BASH
+
+| Symbol    | Meaning                                                        |
+|-----------|----------------------------------------------------------------|
+| `\|`      | Pipe: passes output from one command to another                |
+| `>`       | Redirects output to a file (overwrites content)                |
+| `>>`      | Redirects output to a file (appends to content)                |
+| `<`       | Takes input from a file                                        |
+| `&`       | Runs a process in the background                               |
+| `&&`      | Executes the next command only if the previous one succeeds    |
+| `\|\|`     | Executes the next command only if the previous one fails       |
+
+_Example:_  
+```bash
+ls -l > filelist.txt  # Saves the output of 'ls -l' into filelist.txt
+cat filelist.txt | grep ".txt"  # Displays only .txt files from filelist.txt
+```
