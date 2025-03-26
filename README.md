@@ -14,7 +14,6 @@
     - [Example Workflow](#example-workflow)
   - [GitHub](#github)
     - [Common GitHub Tasks](#common-github-tasks)
-  - [Useful Bash Commands](#useful-bash-commands)
   - [Useful Git Commands](#useful-git-commands)
   - [Git Workflow Diagram](#git-workflow-diagram)
 
