@@ -11,18 +11,21 @@
     - [Process Management in Bash](#process-management-in-bash)
     - [Understanding Process Hierarchies](#understanding-process-hierarchies)
     - [Scripting and Process Control](#scripting-and-process-control)
+    - [Managing System Services with systemctl](#managing-system-services-with-systemctl)
+    - [Job Control](#job-control)
   - [Permissions](#permissions)
     - [File Permissions](#file-permissions)
     - [Changing Permissions](#changing-permissions)
     - [Ownership](#ownership)
     - [Process Permissions](#process-permissions)
+    - [Additional Notations](#additional-notations)
+  - [Shebang](#shebang)
+
+---
 
 ## Variables
 
-Bash variables can be used in the same way as any programming language.  
-There are no data types; a variable in Bash can contain a number, a character, or a string of characters.
-
-You do not need to declare a variable—just assigning a value to its reference will create it.
+Bash variables work similarly to variables in other programming languages. They have no strict data type and can store numbers, characters, or strings. No explicit declaration is required—a variable is created once you assign it a value.
 
 ```bash
 STR="Hello World!"
@@ -32,172 +35,123 @@ echo $STR
 # Hello World!
 ```
 
-Example backup script:
+**Example Backup Script:**
+
 ```bash
 OF=/var/my-backup-$(date +%Y%m%d).tgz
 tar -cZf $OF /home/me/
 ```
 
-Running this script uses `tar`: a program used to create and manipulate archive files.
-
+*Explanation:*
 - **-c**: Creates a new archive.
-- **-Z**: Compresses the archive using the compress program.
-- **-f $OF**: Specifies the name of the archive file.
-- **$OF** is a variable that should contain the desired filename.
+- **-Z**: Compresses the archive using the `compress` program.
+- **-f $OF**: Specifies the archive file name.
+- The variable `OF` includes the current date in `YYYYMMDD` format via command substitution.
 
-`OF` is a variable that will act as a filename for the backup:
-
-- The path starts as `/var/my-backup-`
-- Then an expression is used: `$(date +%Y%m%d)` is a command substitution that executes the `date` command and inserts its output into the variable `OF`.
-
-  - `date +%Y%m%d` formats the current date as `YYYYMMDD`:
-    - `%Y`: Year (e.g., 2025)
-    - `%m`: Month (e.g., 03 for March)
-    - `%d`: Day (e.g., 26)
-
-Local variables can be created using the `local` keyword.
+Local variables can be declared with the `local` keyword:
 
 ```bash
 #!/bin/bash
-HELLO=Hello 
+HELLO="Hello"
 function hello {
-    local HELLO=World
+    local HELLO="World"
     echo $HELLO
 }
-echo $HELLO
-hello
-echo $HELLO
+echo $HELLO   # Outputs: Hello
+hello         # Outputs: World
+echo $HELLO   # Still outputs: Hello
 ```
+
+---
 
 ## Environment Variables
 
-Environment variables, often referred to as ENVs, are dynamic values that wield significant influence over the behavior of programs and processes in the Linux operating system. These variables serve as a means to convey essential information to software and shape how they interact with the environment.
-
-They are essentially key-value pairs that can influence the behavior of the system and applications.
+Environment variables (ENVs) are dynamic key-value pairs that control system and application behavior.
 
 ### Environment Variable Scopes
 
 1. **Global Environment Variables**:  
-   These are system-wide variables available to all users and processes. They are typically defined in files like `/etc/environment`.
+   Available system-wide and typically set in files like `/etc/environment`.
 
 2. **Session Environment Variables**:  
-   These are specific to a user's session and are usually defined in files like `~/.bashrc` or `~/.profile`.
+   Specific to a user's session, defined in files like `~/.bashrc`, `~/.profile`, or `~/.bash_profile`.
 
 3. **Shell Variables**:  
-   These are specific to the current shell instance and are not inherited by child processes unless explicitly exported.
+   Limited to the current shell instance and not inherited by child processes unless exported.
 
 ### Accessing & Setting Environment Variables
 
-- **printenv**: Displays all environment variables or the value of a specified variable.
+- **printenv**: Displays all environment variables or the value of a specific variable.
 - **env**: Lists all environment variables.
 - **set**: Lists all shell variables and functions.
 
-To set an environment variable:
-
-- `export VAR=value`: Sets and exports an environment variable.
-- `VAR=value`: Sets a shell/local variable.
-- `unset VAR`: Removes an environment variable.
-
-Exporting an environment variable in Bash makes it available to child processes started from the current shell. This means that any programs or scripts you run from the shell will inherit the exported variables.
-
-User environment variables can be made persistent by adding them to files like `~/.bashrc`, `~/.profile`, or `~/.bash_profile`.
-
-To set a global environment variable, you need to have root privileges and add the variable to `/etc/environment`.
-
-For example, to set a user environment variable, you might add the following line to your `~/.bashrc`:
-
-  Login Shells:
-  When you log in (e.g., via a text console, SSH, or a graphical login), Bash will typically execute ~/.bash_profile or, if that doesn't exist, ~/.profile. These files are meant for setting up your environment once during login.
-
-  Interactive Non-Login Shells:
-  When you open a new terminal window from your desktop environment (which usually starts an interactive non-login shell), Bash generally reads ~/.bashrc.
-  Many users configure their ~/.bash_profile to source ~/.bashrc so that both login and non-login shells have similar settings.
+**To set an environment variable:**
 
 ```bash
 export MY_VAR="some_value"
 ```
 
-Or simply run:
+Persistently add it to your `~/.bashrc`:
 
 ```bash
 echo 'export MY_VAR="value"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-The `source` command executes the commands in `~/.bashrc` within the current shell.
+---
 
 ## Processes
 
-Processes are active instances of programs in execution. While a program is a static collection of code and instructions, a process represents the running state of that program, with its own process ID (PID), memory space, and execution context.
+Processes are running instances of programs. Each process has a unique process ID (PID) and its own memory space and execution context.
 
 ### Process Management in Bash
 
 - **Listing Processes:**  
-  The `ps` command provides a snapshot of current processes. For example:
+  Use the `ps aux` command to view all running processes:
   ```bash
   ps aux
   ```
-  This command lists all running processes with details such as user, PID, CPU usage, memory usage, and the command that started the process.
 
 - **Real-Time Monitoring:**  
-  The `top` or `htop` commands allow real-time monitoring of processes. They display dynamic information such as CPU and memory usage.
+  Use `top` (or `htop` if installed) for dynamic process information:
   ```bash
   top
   ```
 
-- **Background & Foreground Processes:**  
-  You can run processes in the background by appending an `&` at the end of a command:
+- **Running Processes in Background & Foreground:**  
+  Append `&` to run a command in the background:
   ```bash
   long_running_command &
   ```
-  This allows the shell to remain available for other commands. Use the `jobs` command to list background jobs:
+  List background jobs:
   ```bash
   jobs
   ```
-  To bring a background job to the foreground, use:
+  Bring a background job to the foreground:
   ```bash
   fg %job_number
   ```
 
-- **Process Control:**  
-  You can control processes using signals. For example, to terminate a process, use the `kill` command along with its PID:
+- **Process Control Using Signals:**  
+  Terminate processes using `kill`:
   ```bash
-  kill 1234
+  kill 1234          # Default (SIGTERM, signal 15)
+  kill -1 1234       # Gentle termination (SIGHUP)
+  kill -9 1234       # Forceful termination (SIGKILL)
   ```
-  More forceful termination can be achieved with:
-  ```bash
-  kill -9 1234
-  ```
-
-- **Job Control:**  
-  Bash provides job control features that allow you to suspend, resume, and manage multiple processes. To suspend a running process, you can press `Ctrl+Z`. Then, use the `bg` command to resume it in the background or `fg` to resume it in the foreground.
-
-- **Command Substitution and Process Substitution:**  
-  Bash allows you to capture the output of a process using command substitution:
-  ```bash
-  result=$(ls -l)
-  ```
-  Process substitution can be used to treat the output of a process as if it were a file:
-  ```bash
-  diff <(command1) <(command2)
-  ```
+  *Note:* Use signal `-15` (or the default) when a process has child processes.
 
 ### Understanding Process Hierarchies
 
-- **Parent and Child Processes:**  
-  Every process in Linux, except for the init/systemd process, has a parent process. When a shell spawns a new process, that process becomes a child of the shell. You can view the relationship between processes using commands like:
-  ```bash
-  ps -ef --forest
-  ```
-  This displays processes in a hierarchical tree structure, showing how they are related.
-
-- **Process IDs (PIDs):**  
-  Each process is assigned a unique PID. Special process IDs like `1` (init or systemd) are reserved and play critical roles in system management.
+Every process (except for `init`/`systemd`) has a parent process. To view the hierarchy:
+```bash
+ps -ef --forest
+```
 
 ### Scripting and Process Control
 
-- **Running Scripts in the Background:**  
-  When writing scripts, you might want to run multiple commands concurrently. Backgrounding processes within scripts can be done with `&`, and you can use the `wait` command to pause the script until all background processes have finished:
+- **Running Multiple Commands Concurrently:**  
+  Run commands in the background and wait for their completion:
   ```bash
   command1 &
   command2 &
@@ -206,7 +160,7 @@ Processes are active instances of programs in execution. While a program is a st
   ```
 
 - **Handling Signals in Scripts:**  
-  Scripts can trap signals using the `trap` command to perform cleanup or other actions when a process receives a signal:
+  Use `trap` to capture signals for cleanup or custom actions:
   ```bash
   trap "echo 'Interrupted!'; exit" SIGINT
   while true; do
@@ -215,64 +169,99 @@ Processes are active instances of programs in execution. While a program is a st
   done
   ```
 
+### Managing System Services with systemctl
+
+The `systemctl` command is used to manage system processes such as web servers or FTP servers.
+
+**Nginx Web Server:**
+- Installing Nginx automatically starts the service.
+- It is a widely used web server.
+
+**Common Commands:**
+```bash
+sudo systemctl status nginx    # Check the status of Nginx
+sudo systemctl start nginx     # Start Nginx
+sudo systemctl stop nginx      # Stop Nginx
+sudo systemctl restart nginx   # Restart Nginx
+sudo systemctl enable nginx    # Enable Nginx as a startup service
+```
+
+`systemctl` can interact with various system processes, not just web servers—it also manages services like FTP servers and others.
+
+### Job Control
+
+Bash supports job control for managing foreground and background processes:
+- **Bring a job to the foreground:**
+  ```bash
+  fg %job-id
+  ```
+- **Suspend a running process:**  
+  Press `Ctrl+Z` to stop the process.
+- **Resume a suspended process in the background:**
+  ```bash
+  bg
+  ```
+
+---
+
 ## Permissions
 
-File and process permissions in Linux help protect data by controlling who can read, write, or execute files and programs. Permissions are set using a combination of user, group, and others, each of which can be assigned read, write, or execute permissions.
+Permissions in Linux dictate who can read, write, or execute files and processes. They are set for the user, group, and others.
 
 ### File Permissions
 
-- **Read (r)**: Permission to read the file.
-- **Write (w)**: Permission to modify or delete the file.
-- **Execute (x)**: Permission to run the file as a program.
+File permissions include:
+- **r**: Read permission
+- **w**: Write permission
+- **x**: Execute permission
 
-Permissions are typically displayed using the `ls -l` command:
-
+Example of a detailed file listing:
 ```bash
 ls -l filename
 ```
-
-The output might look like this:
-
+Example output:
 ```
 -rwxr-xr-- 1 user group 4096 Mar 27 10:00 filename
 ```
-
-- The first character indicates the file type (`-` for a regular file, `d` for a directory).
-- The next nine characters are grouped into three sets representing permissions for the user, group, and others.
-  - `rwx`: The user has read, write, and execute permissions.
-  - `r-x`: The group has read and execute permissions.
-  - `r--`: Others have only read permission.
+- The first character denotes the file type (`-` for a regular file, `d` for a directory).
+- The following nine characters are grouped into three sets (user, group, others).
 
 ### Changing Permissions
 
-The `chmod` command is used to change file permissions. For example:
-
+Use the `chmod` command to modify file permissions:
 ```bash
 chmod 755 filename
 ```
-
-This command sets the permissions as follows:
-
-- `7` (user): read (4) + write (2) + execute (1) = 7
-- `5` (group): read (4) + execute (1) = 5
-- `5` (others): read (4) + execute (1) = 5
+- `7` (user): 4 (read) + 2 (write) + 1 (execute)
+- `5` (group): 4 (read) + 1 (execute)
+- `5` (others): 4 (read) + 1 (execute)
 
 ### Ownership
 
-Files and directories have an owner and a group. You can change ownership with the `chown` command:
-
+Files and directories have an owner and a group. Use `chown` (shorthand for "change owner") to change ownership:
 ```bash
 chown user:group filename
 ```
 
 ### Process Permissions
 
-When a process runs, it inherits the permissions of the user who started it. However, some processes may need elevated privileges. These privileges can be granted temporarily using the `sudo` command.
-
-For example, to edit a file with elevated privileges:
-
+A process inherits the permissions of the user who started it. For elevated privileges, use `sudo`:
 ```bash
 sudo nano /etc/hosts
 ```
 
-The `sudo` command temporarily grants administrative privileges to execute the command.
+### Additional Notations
+
+- **d**: Indicates a directory in file listings.
+- **rwx**: Denotes read, write, and execute permissions.
+
+---
+
+## Shebang
+
+The shebang (`#!/bin/bash`) at the beginning of a script specifies which shell to use. It tells the operating system the path to the shell interpreter.
+
+```bash
+#!/bin/bash
+# Your script content here
+```
