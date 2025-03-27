@@ -1,20 +1,39 @@
 # BASH Cheatsheet
 
 ## Contents
-1. [What is BASH?](#what-is-bash)
-2. [User & System Information Commands](#user--system-information-commands)
-3. [Root & User Management](#root--user-management)
-4. [File & Directory Management](#file--directory-management)
-5. [File Viewing & Editing](#file-viewing--editing)
-6. [Downloading Files](#downloading-files)
-7. [Package Management (`apt`)](#package-management-apt)
-8. [Special Characters in BASH](#special-characters-in-bash)
-9. [Summary of Useful Commands](#summary-of-useful-commands)
+- [BASH Cheatsheet](#bash-cheatsheet)
+  - [Contents](#contents)
+  - [What is BASH?](#what-is-bash)
+  - [What is a Kernel](#what-is-a-kernel)
+  - [What is a shell](#what-is-a-shell)
+    - [Key Concepts:](#key-concepts)
+  - [User \& System Information Commands](#user--system-information-commands)
+  - [Root \& User Management](#root--user-management)
+  - [File \& Directory Management](#file--directory-management)
+  - [File Viewing \& Editing](#file-viewing--editing)
+  - [Downloading Files](#downloading-files)
+  - [Package Management (`apt`)](#package-management-apt)
+    - [Using `sudo`](#using-sudo)
+  - [Special Characters in BASH](#special-characters-in-bash)
+
+[A really nice BASH scripting guide](https://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO.html#toc6)
 
 ## What is BASH?
 
 **BASH** = **Bourne Again Shell**  
 A command-line shell and scripting language for Unix/Linux systems.
+
+## What is a Kernel
+  The kernel is a computer program that is the core of a computer’s operating system, with complete control over everything in the system. It manages the following resources of the Linux system:
+
+  - File management
+  - Process management
+  - I/O management
+  - Memory management
+  - Device management etc.
+
+## What is a shell
+  A shell is a special user program that provides an interface for the user to use operating system services. Shell accepts human-readable commands from users and converts them into something which the kernel can understand.
 
 ### Key Concepts:
 - **Linux does not care about file extensions**  
@@ -134,3 +153,4 @@ _Example:_
 ls -l > filelist.txt  # Saves the output of 'ls -l' into filelist.txt
 cat filelist.txt | grep ".txt"  # Displays only .txt files from filelist.txt
 ```
+
