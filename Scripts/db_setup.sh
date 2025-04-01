@@ -42,4 +42,5 @@ echo "======== Altered MongoDB config to allow connections from any ip  ========
 
 # Start the database service
 sudo systemctl start mongod
+sudo systemctl enable mongod
 echo "======== MongoDB service provisioned  ========"

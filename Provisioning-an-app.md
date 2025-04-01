@@ -1,12 +1,13 @@
-# Server Environment Automation Documentation
+# Server Environment Automation
 
 **This document details the processes automated by two Bash scripts.**
+
 1. Deploying a Node.js application with an Nginx reverse proxy
 2. Setting up a MongoDB database server.
 
 **Ensure that:**
 
-* The database script is ran first, this is so you can supply the ip address of the database to the app * deployment script
+* The database script is ran first, this is so you can supply the ip address of the database to the app deployment script
 * Each script is run on a different virtual instance
 * The database instance is configured to accept requests on port `27017`
 * The app instance is configured to accept HTTP requests on port `80`
@@ -86,6 +87,8 @@ sudo DEBIAN_FRONTEND=noninteractive npm install
 node seeds/seed.js
 ```
 
+* This ensures the node application can access the database, as we specify the ip in an environment variable
+
 ### 6. Running the Application with PM2
 
 Any conflicting processes are terminated, and the application is started under PM2 management:
@@ -118,13 +121,18 @@ sudo DEBIAN_FRONTEND=noninteractive apt update -y
 sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y
 ```
 
+* This ensures any interactive screens that would cause the script to hang are skipped
+
 ### 2. Installing Required Utilities
 
-Essential tools such as `gnupg` and `curl` are installed:
+Essential tools `gnupg` and `curl` are installed:
 
 ```bash
 sudo DEBIAN_FRONTEND=noninteractive apt install gnupg curl
 ```
+
+* GNUPG is a free, open-source cryptographic software suite that provides digital encryption and signing services
+* Curl is a command-line HTTP client
 
 ### 3. Adding the MongoDB Repository and Installing Components
 
@@ -151,6 +159,13 @@ To allow remote access, MongoDB’s configuration is updated:
 # Change the bindIp setting to allow connections from any IP address
 sudo sed -i '21s/.*/  bindIp: 0.0.0.0/' /etc/mongod.conf
 ```
+
+This command uses `sed`, a stream editor utility:
+
+* The -i flag means edit the file "in-place", meaning changes are directly applied
+* `21s/.../.../` 21 specifies to operate on line 21 of the file, s stands for substute or "replace text"
+* `.*` - `.` matches any character - `*` matches zero or more occurances
+* Therefore the entire line is replaced with `bindIp: 0.0.0.0`
 
 ### 5. Starting the MongoDB Service
 
