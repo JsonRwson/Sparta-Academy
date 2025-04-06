@@ -42,7 +42,7 @@ echo "======== PM2 installed ========"
 # Replace with ip address of DB
 # echo 'export DB_HOST=<ip>' >> ~/.bashrc
 echo 'export DB_HOST=mongodb://3.250.223.115:27017/posts' >> ~/.bashrc
-export DB_HOST=mongodb://54.229.203.9:27017/posts
+export DB_HOST=mongodb://54.195.144.211:27017/posts
 echo "======== DB_HOST env variable set ========"
 
 # install dependencies

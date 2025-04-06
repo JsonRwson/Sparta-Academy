@@ -1,6 +1,6 @@
 # Virtual Machine Images & AMIs
 
-## What is a VM Image?
+### What is a VM Image?
 
 A virtual machine image is a file or set of files that captures a snapshot of the entire state of a virtual machine at a given point.
 
