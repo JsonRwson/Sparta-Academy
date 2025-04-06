@@ -16,13 +16,9 @@
     - [Steps to Create an Auto Scaling Group](#steps-to-create-an-auto-scaling-group)
   - [Deletion Order](#deletion-order)
 
----
-
 ## What is a Virtual Machine (VM)?
 
 A **Virtual Machine (VM)** is a software-based emulation of a physical computer. It runs an operating system and applications just like a physical server but is hosted on a physical machine via a virtualization layer called a hypervisor.
-
----
 
 ## Benefits of a VM
 
@@ -36,8 +32,6 @@ Cloud providers like **Amazon Web Services (AWS)** offer VMs through services li
 
 VMs are ideal for running applications, hosting websites, processing data, and more—all without managing physical hardware.
 
----
-
 ## Virtual Images
 
 ### What is a VM Image?
@@ -48,8 +42,6 @@ A **VM image** is a file (or set of files) that captures a snapshot of the entir
 - **Installed Software and Packages**: All applications and software packages.
 - **Configuration and Metadata Files**: Settings and metadata necessary for the VM's operation.
 - **File System**: The entire file system of the virtualized disk.
-
----
 
 ## How Does a VM Image Work?
 
@@ -65,8 +57,6 @@ A **VM image** is a file (or set of files) that captures a snapshot of the entir
 3. **Deployment**  
    Deploy the VM image onto a new virtual machine instance to replicate the original state.
 
----
-
 ## Benefits of Using a Virtual Machine Image
 
 - **Portability**: Migrate the state of a VM to another provider or virtual environment easily, making scaling up or down simpler.
@@ -74,13 +64,9 @@ A **VM image** is a file (or set of files) that captures a snapshot of the entir
 - **Efficiency**: Eliminate the need to manually configure and set up each virtual instance.
 - **Recovery**: Facilitate quick recovery by restoring VMs from previously saved images in case of failures, minimizing downtime.
 
----
-
 ## Creating a Virtual Instance with AWS (EC2)
 
 **Amazon Elastic Compute Cloud (EC2)** is a web service that provides resizable compute capacity in the cloud, allowing you to rent VMs (called instances) to run your applications. The process involves selecting an operating system, instance type (e.g., t2.micro, which offers 1 virtual CPU and 1GB of memory), and configuring various settings before launching the instance.
-
----
 
 ## EC2 - On-Demand and Spot Instances
 
@@ -88,8 +74,6 @@ AWS offers different purchasing options for EC2 instances:
 
 - **On-Demand Instances**: Pay for compute capacity by the hour or second without long-term commitments.
 - **Spot Instances**: Purchase unused compute capacity at discounted rates, which is suitable for flexible and fault-tolerant workloads. Spot instances offer significant discounts in exchange for the risk of interruptions and flexible pricing based on supply and demand.
-
----
 
 ## Amazon Machine Images (AMIs)
 
@@ -109,8 +93,6 @@ To create an AMI from an existing EC2 instance, ensure the instance is **stopped
 
 <img src="./images/image-3.png" style="border: 2px solid grey;" width="700">
 
----
-
 ## Launch Templates (LTs)
 
 A **Launch Template** contains the configuration information required to launch an EC2 instance. It includes details such as the AMI ID, key pair, security groups, compute resources, and storage configuration. Launch templates streamline and automate the process of launching EC2 instances by bundling all necessary information.
@@ -126,9 +108,9 @@ When creating a launch template, you must:
 
 <img src="./images/image-6.png" style="border: 2px solid grey;" width="700">
 
----
-
 ## Auto Scaling Groups (ASGs)
+
+<img src="./images/AutoScalingGroup.png" style="border: 2px solid grey;" width="700">
 
 An **Auto Scaling Group (ASG)** in AWS is a collection of EC2 instances managed as a single logical group for automatic scaling and management. ASGs help maintain application availability and allow you to automatically add or remove instances according to defined scaling policies.
 
@@ -145,31 +127,31 @@ An **Auto Scaling Group (ASG)** in AWS is a collection of EC2 instances managed 
 
 ### Steps to Create an Auto Scaling Group
 
-1. **Initial Setup**:  
+1. **Initial Setup**  
    - Specify the ASG name and choose the Launch Template.
    - Define the desired capacity (initial number of instances) and set minimum and maximum limits.
 
 <img src="./images/image-8.png" style="border: 2px solid grey;" width="700">
 
-2. **Network Configuration**:  
+2. **Network Configuration**  
    - Select the VPC and the appropriate availability zones/subnets.
    - If using a load balancer, choose whether to attach your ASG to one. An internet-facing load balancer can manage incoming traffic efficiently.
 
 <img src="./images/image-10.png" style="border: 2px solid grey;" width="700">
 
-3. **Load Balancing and Scaling**:  
+3. **Load Balancing and Scaling**  
    - Configure load balancing settings to distribute incoming traffic.
    - Define scaling policies and set up instance maintenance policies to ensure high availability.
 
 <img src="./images/image-11.png" style="border: 2px solid grey;" width="700">
 
-4. **Group Size and Monitoring**:  
+4. **Group Size and Monitoring**  
    - Set the desired capacity and scaling limits.
    - Enable CloudWatch metrics for monitoring performance and health.
 
 <img src="./images/image-12.png" style="border: 2px solid grey;" width="700">
 
-5. **Notifications and Tagging**:  
+5. **Notifications and Tagging**  
    - Configure Amazon SNS to receive notifications for instance launches or terminations.
    - Apply tags to the ASG for resource management, cost tracking, and access control.
 
@@ -177,13 +159,11 @@ An **Auto Scaling Group (ASG)** in AWS is a collection of EC2 instances managed 
 
 <img src="./images/image-14.png" style="border: 2px solid grey;" width="700">
 
-6. **Resource Organization**:  
+6. **Resource Organization**  
    - Use tagging to identify and organize AWS resources across services.
-   - Tagging an ASG with a name attribute ensures created instances are named
+   - Tagging an ASG with a name attribute ensures created instances are named.
 
 <img src="./images/image-15.png" style="border: 2px solid grey;" width="700">
-
----
 
 ## Deletion Order
 
@@ -193,5 +173,3 @@ When deleting resources, follow this order to ensure a clean removal:
 2. **Target Group**
 3. **Auto Scaling Group**
 4. **EC2 Instances**
-
----
