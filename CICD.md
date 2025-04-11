@@ -23,6 +23,15 @@ Before starting, ensure you have:
 - An AWS EC2 instance configured with a reverse proxy for the NodeJS app
 - Basic understanding of Git, Jenkins, and AWS
 
+---
+
+<img src="./images/jk-git-host-key-conf.png" style="background: white; border: 2px solid grey;" width="750">
+
+<img src="./images/jk-add-node-version.png" style="background: white; border: 2px solid grey;" width="750">
+
+- In Jekinks configuration settings, ensure a NodeJS version has been specified for the NodeJS plugin
+- Also ensure the Git host key verification configuration is set to no verification
+
 ## Pipeline Setup Process
 
 The complete pipeline consists of three Jenkins jobs:
@@ -31,7 +40,7 @@ The complete pipeline consists of three Jenkins jobs:
 2. **Merge Job**: Merges passing code from dev to main
 3. **Deploy Job**: Deploys the merged code to production
 
----
+
 
 ## Job 1: Building and Testing the App
 
@@ -258,3 +267,33 @@ These commands:
 4. Start the application using PM2 process manager
 
 The `EOF` marker ends the here-document block.
+
+## Understanding CI/CD and Jenkins
+
+### What is CI/CD?
+
+**Continuous Integration (CI)** and **Continuous Deployment/Delivery (CD)** are software development practices that enable teams to deliver code changes more frequently and reliably:
+
+- **Continuous Integration (CI)** is the practice of frequently merging code changes into a shared repository, where automated builds and tests verify each integration. This helps detect integration problems early, improves code quality, and reduces the time to validate and release new features.
+
+- **Continuous Delivery (CD)** extends CI by automatically deploying all code changes to a testing or staging environment after the build stage. This ensures that code is always in a deployable state and enables faster feedback loops.
+
+- **Continuous Deployment** takes CD further by automatically deploying every change that passes all verification stages directly to production, without human intervention.
+
+### Jenkins in the CI/CD Pipeline
+
+**Jenkins** is an open-source automation server that facilitates CI/CD practices through its powerful pipeline capabilities:
+
+- **Automation Hub**: Jenkins orchestrates the entire software delivery process, from code commits to production deployment
+- **Extensibility**: With over 1,500 plugins, Jenkins integrates with virtually any tool in the development ecosystem
+- **Distributed Architecture**: Jenkins can distribute build and test loads across multiple agents
+- **Pipeline as Code**: Jenkins pipelines can be defined in a Jenkinsfile, allowing version control of the CI/CD process itself
+
+In our pipeline, Jenkins performs three critical roles:
+
+1. **Build & Test Orchestration**: Automatically pulls code from GitHub when changes are detected, then builds and tests the application
+2. **Branch Management**: Handles the merging of verified code from development to main branches
+3. **Deployment Automation**: Securely connects to AWS EC2 and deploys the application to production
+
+This automation eliminates error-prone manual steps, ensures consistent testing before deployment, and provides visibility into the entire delivery process through the Jenkins dashboard.
+
