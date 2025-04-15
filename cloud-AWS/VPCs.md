@@ -13,14 +13,14 @@ A private cloud is a single-tenant cloud service exclusively offered to one orga
 ### What is a VPC?
 A Virtual Private Cloud (VPC) is a secure, isolated private cloud hosted within a public cloud. VPC customers can run code, store data, host websites, and perform any tasks they could do in an ordinary private cloud, but with the advantage of being hosted remotely by a public cloud provider.
 
-<img src="./images/virtual-private-cloud-1.svg" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/virtual-private-cloud-1.svg" style="background: white; border: 2px solid grey;" width="550">
 
 ### Amazon VPC
 **Amazon Virtual Private Cloud** (Amazon VPC) is Amazon's implementation of a VPC service. With Amazon VPC, you can launch AWS resources in a logically isolated virtual network that closely resembles a traditional private network while benefiting from AWS's scalable infrastructure.
 
 The following diagram shows an example AWS VPC with one subnet in each Availability Zone in the Region, EC2 instances in each subnet, and an internet gateway enabling communication between VPC resources and the internet.
 
-<img src="./images/how-it-works.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/how-it-works.png" style="background: white; border: 2px solid grey;" width="550">
 
 ## Business Benefits of a VPC
 
@@ -80,7 +80,7 @@ A VPC isolates computing resources from other resources available in the public 
 
 ### Subnets
 
-<img src="./images/subnet-diagram.svg" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/subnet-diagram.svg" style="background: white; border: 2px solid grey;" width="550">
 
 A subnet is a range of IP addresses within a network reserved for private use, essentially dividing part of the network. In a VPC, these are private IP addresses that are not accessible via the public Internet, unlike typical IP addresses that are publicly visible.
 
@@ -110,7 +110,7 @@ Security Groups act as virtual firewalls that control inbound and outbound traff
 
 ### 1. Create the VPC
 
-<img src="./images/create-VPC.png" style="background: white; border: 2px solid grey;" width="550"> <img src="./images/VPC-diagram-1.png" style="background: white; border: 2px solid grey;" width="405">
+<img src="../images/create-VPC.png" style="background: white; border: 2px solid grey;" width="550"> <img src="../images/VPC-diagram-1.png" style="background: white; border: 2px solid grey;" width="405">
 
 - Provide a name
 - Provide an IPv4 CIDR (use 10.0.0.0/16)
@@ -120,31 +120,31 @@ Security Groups act as virtual firewalls that control inbound and outbound traff
 
 ### 2. Create and Attach an Internet Gateway
 
-<img src="./images/internet-gateway.png" style="background: white; border: 2px solid grey;" width="800" height="367"> <img src="./images/VPC-diagram-2.png" style="background: white; border: 2px solid grey;" width="405">
+<img src="../images/internet-gateway.png" style="background: white; border: 2px solid grey;" width="800" height="367"> <img src="../images/VPC-diagram-2.png" style="background: white; border: 2px solid grey;" width="405">
 
 - Create an internet gateway
   - This allows the app to access the internet
   - It also allows internet users to access the app
 
-<img src="./images/attatch-IG.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/attatch-IG.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Attach the Internet gateway to the VPC so the public subnet can access the internet
 
 ### 3. Create Subnets
 
-<img src="./images/create-subnet1.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/create-subnet1.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Create subnets
 - Provide the ID of the VPC to place subnets within
 
-<img src="./images/public-subnet.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/public-subnet.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Create public subnet
   - The public subnet will host the app, so users can access the website
   - Use 10.0.2.0/24 for CIDR
   - 3×8 = 24, first 3 digits are reserved, we use "2" to represent the public subnet
 
-<img src="./images/private-subnet.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/private-subnet.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Create a private subnet
   - The private subnet will host the database
@@ -152,27 +152,27 @@ Security Groups act as virtual firewalls that control inbound and outbound traff
   - The app can still interact with the DB as it sits in the same VPC
   - Place subnets in different availability zones for redundancy
 
-<img src="./images/VPC-diagram-3.png" style="background: white; border: 2px solid grey;" width="405">
+<img src="../images/VPC-diagram-3.png" style="background: white; border: 2px solid grey;" width="405">
 
 ### 4. Configure Route Tables
 
-<img src="./images/Route-table.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/Route-table.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Create the public route table that ensures the public subnet can access the internet and vice versa
 
-<img src="./images/route-table-associate.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/route-table-associate.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Associate the public route table to the public subnet so the internet gateway can be used
 
-<img src="./images/edit-public-route.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/edit-public-route.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Add a route to allow traffic from any address on the internet
 
-<img src="./images/VPC-diagram-4.png" style="background: white; border: 2px solid grey;" width="405">
+<img src="../images/VPC-diagram-4.png" style="background: white; border: 2px solid grey;" width="405">
 
 ### 5. Launch Database Instance
 
-<img src="./images/launch-db-vpc.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/launch-db-vpc.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Launch an EC2 instance for the database in the VPC
   - Do this first to specify the private IP for the DB when launching the app
@@ -182,14 +182,14 @@ Security Groups act as virtual firewalls that control inbound and outbound traff
 
 ### 6. Launch Application Instance
 
-<img src="./images/launch-app-vpc.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/launch-app-vpc.png" style="background: white; border: 2px solid grey;" width="550">
 
 - Launch an EC2 instance for the app in the VPC
   - Change subnet and enable public IP as this is internet-facing
   - Create a custom security group as they are subnet-based, allow HTTP
   - Add user data, specify local IP of DB (this is why DB must be launched first)
 
-<img src="./images/VPC-diagram-5.png" style="background: white; border: 2px solid grey;" width="405">
+<img src="../images/VPC-diagram-5.png" style="background: white; border: 2px solid grey;" width="405">
 
 ## Cleanup Process
 

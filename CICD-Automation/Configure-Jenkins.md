@@ -72,7 +72,7 @@ sudo systemctl status jenkins
 
 When accessing Jenkins for the first time, you'll need to unlock it using an automatically generated password:
 
-<img src="./images/jk-unlock.jpg" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-unlock.jpg" style="background: white; border: 2px solid grey;" width="550">
 
 Retrieve the initial admin password:
 
@@ -92,30 +92,30 @@ Enter the password in the form to unlock Jenkins.
 
 After unlocking Jenkins, you'll be prompted to install plugins.
 
-<img src="./images/jk-plugin-opt.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-plugin-opt.png" style="background: white; border: 2px solid grey;" width="550">
 
 Select "Select plugins to install" for customized setup. The following plugins are recommended for a NodeJS CI/CD pipeline:
 
 #### SSH Agent Plugin
 Allows Jenkins to use SSH keys for authentication with remote servers.
 
-<img src="./images/jk-ssh-plugin.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-ssh-plugin.png" style="background: white; border: 2px solid grey;" width="550">
 
 #### NodeJS Plugin
 Provides Jenkins integration with NodeJS and npm.
 
-<img src="./images/jk-nodeJS-plugin.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-nodeJS-plugin.png" style="background: white; border: 2px solid grey;" width="550">
 
 #### GitHub Plugin
 Integrates Jenkins with GitHub repositories.
 
-<img src="./images/jk-github-plugin.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-github-plugin.png" style="background: white; border: 2px solid grey;" width="550">
 
 ### Step 3: Create Admin User
 
 After installing plugins, create your first admin user:
 
-<img src="./images/jk-create-admin.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-create-admin.png" style="background: white; border: 2px solid grey;" width="550">
 
 Fill in the required information:
 - Username

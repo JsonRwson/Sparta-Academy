@@ -1,6 +1,6 @@
 # Setting up a CI/CD Pipeline with GitHub, Jenkins and AWS EC2
 
-<img src="./images/jk-diagram.png" style="background: white; border: 2px solid grey;" width="650">
+<img src="../images/jk-diagram.png" style="background: white; border: 2px solid grey;" width="650">
 
 ## Overview
 
@@ -25,9 +25,9 @@ Before starting, ensure you have:
 
 ---
 
-<img src="./images/jk-git-host-key-conf.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-git-host-key-conf.png" style="background: white; border: 2px solid grey;" width="750">
 
-<img src="./images/jk-add-node-version.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-add-node-version.png" style="background: white; border: 2px solid grey;" width="750">
 
 - In Jekinks configuration settings, ensure a NodeJS version has been specified for the NodeJS plugin
 - Also ensure the Git host key verification configuration is set to no verification
@@ -46,9 +46,9 @@ The complete pipeline consists of three Jenkins jobs:
 
 ### Create the Job
 
-<img src="./images/jk-create-job.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-create-job.png" style="background: white; border: 2px solid grey;" width="550">
 
-<img src="./images/jk-desc.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-desc.png" style="background: white; border: 2px solid grey;" width="550">
 
 1. In Jenkins, select "New Item"
 2. Choose "Freestyle project"
@@ -56,17 +56,17 @@ The complete pipeline consists of three Jenkins jobs:
 
 ### Configure Build Retention
 
-<img src="./images/jk-builds.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-builds.png" style="background: white; border: 2px solid grey;" width="550">
 
 Set the job to discard old builds and keep only the last 3 builds to conserve server resources.
 
 ### Configure GitHub Integration
 
-<img src="./images/jk-proj-url.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-proj-url.png" style="background: white; border: 2px solid grey;" width="550">
 
 Enter the URL to your GitHub project.
 
-<img src="./images/jk-rep-url.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-rep-url.png" style="background: white; border: 2px solid grey;" width="550">
 
 Provide the SSH URL to your repository (found by clicking the green "Code" button in GitHub).
 
@@ -78,9 +78,9 @@ ssh-keygen -t rsa -b 4096 -C "your-email@example.com"
 
 Generate an SSH key pair to create a **Deploy Key** for the GitHub repository, which will grant Jenkins access to the repo.
 
-<img src="./images/jk-dep-key.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-dep-key.png" style="background: white; border: 2px solid grey;" width="550">
 
-<img src="./images/jk-cred.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-cred.png" style="background: white; border: 2px solid grey;" width="550">
 
 In Jenkins Credential Manager:
 1. Create an SSH Username with private key
@@ -94,25 +94,25 @@ In GitHub repository settings:
    - Run `cat public-key-name.pub` to get the content
 3. Enable write access if needed
 
-<img src="./images/jk-add-dep-key.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-add-dep-key.png" style="background: white; border: 2px solid grey;" width="550">
 
 ### Configure Branch and Build Triggers
 
-<img src="./images/jk-branch.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-branch.png" style="background: white; border: 2px solid grey;" width="550">
 
 Specify the **dev** branch as the branch to build and test.
 
-<img src="./images/jk-trigger.png" style="background: white; border: 2px solid grey;" width="350">
+<img src="../images/jk-trigger.png" style="background: white; border: 2px solid grey;" width="350">
 
 Enable GitHub webhook integration to automatically trigger builds on push events.
 
-<img src="./images/jk-webhook.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-webhook.png" style="background: white; border: 2px solid grey;" width="550">
 
 Set up a webhook in GitHub repository settings to notify Jenkins of changes.
 
 ### Configure Build Environment
 
-<img src="./images/jk-build-env.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-build-env.png" style="background: white; border: 2px solid grey;" width="750">
 
 Use the NodeJS plugin to provide the appropriate runtime environment:
 1. Check "Provide Node & npm bin/ folder to PATH"
@@ -120,7 +120,7 @@ Use the NodeJS plugin to provide the appropriate runtime environment:
 
 ### Add Build Steps
 
-<img src="./images/jk-test-bash.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-test-bash.png" style="background: white; border: 2px solid grey;" width="750">
 
 Add an "Execute shell" build step with commands to build and test your app, such as:
 
@@ -131,7 +131,7 @@ npm test
 
 ### Configure Build Chain
 
-<img src="./images/jk-chain-1.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-chain-1.png" style="background: white; border: 2px solid grey;" width="750">
 
 After creating Job 2, return to Job 1 and add a post-build action:
 1. Select "Build other projects"
@@ -144,19 +144,19 @@ After creating Job 2, return to Job 1 and add a post-build action:
 
 ### Create the Job
 
-<img src="./images/jk-copy-from1.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-copy-from1.png" style="background: white; border: 2px solid grey;" width="550">
 
 Create a new job by copying from Job 1 to save time and maintain consistency.
 
 ### Configure Triggers
 
-<img src="./images/jk-build-trigger2.png" style="background: white; border: 2px solid grey;" width="350">
+<img src="../images/jk-build-trigger2.png" style="background: white; border: 2px solid grey;" width="350">
 
 Uncheck "GitHub hook trigger" since this job will be triggered by the successful completion of Job 1.
 
 ### Configure Git Publisher
 
-<img src="./images/jk-git-publisher.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-git-publisher.png" style="background: white; border: 2px solid grey;" width="750">
 
 Add a "Git Publisher" post-build action to:
 1. Merge the successful changes to the **main** branch
@@ -164,7 +164,7 @@ Add a "Git Publisher" post-build action to:
 
 ### Configure Build Chain
 
-<img src="./images/jk-chain-project2.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-chain-project2.png" style="background: white; border: 2px solid grey;" width="550">
 
 After creating Job 3, return to Job 2 and add a post-build action:
 1. Select "Build other projects"
@@ -186,19 +186,19 @@ Before configuring this job, ensure your EC2 instance:
 
 ### Create the Job
 
-<img src="./images/jk-copy-from2.png" style="background: white; border: 2px solid grey;" width="550">
+<img src="../images/jk-copy-from2.png" style="background: white; border: 2px solid grey;" width="550">
 
 Create a new job by copying from Job 2 to maintain consistent configuration.
 
 ### Configure Branch
 
-<img src="./images/jk-change-branch.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-change-branch.png" style="background: white; border: 2px solid grey;" width="750">
 
 Change the branch to build to **main** since we want to deploy the merged, tested code.
 
 ### Configure SSH
 
-<img src="./images/jk-ssh-agent.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-ssh-agent.png" style="background: white; border: 2px solid grey;" width="750">
 
 Under build environment:
 1. Check "SSH Agent"
@@ -207,7 +207,7 @@ Under build environment:
 
 ### Configure Deployment Script
 
-<img src="./images/jk-exec-shell.png" style="background: white; border: 2px solid grey;" width="750">
+<img src="../images/jk-exec-shell.png" style="background: white; border: 2px solid grey;" width="750">
 
 Remove previous build steps and add a new "Execute shell" step with the deployment script:
 
