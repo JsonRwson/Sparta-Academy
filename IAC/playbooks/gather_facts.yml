@@ -1,0 +1,11 @@
+---
+- name: print facts
+  hosts: all
+  # Gather facts should be false by default
+  # This will slowdown execution of playbooks
+  # Especially if there are a large number of hosts
+  gather_facts: true
+  tasks:
+    - name: print facts
+      ansible.builtin.debug:
+        var: ansible_facts

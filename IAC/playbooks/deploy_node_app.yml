@@ -1,0 +1,154 @@
+# Name of the play - This is the identifier for this set of tasks
+- name: Deploy node app
+  # 'hosts' specifies which inventory hosts the play will run on
+  # 'app' is a group name defined in your Ansible inventory file
+  hosts: app
+  
+  # 'become: true' elevates privileges to root/sudo for all tasks
+  # This is necessary for system-level operations like package installation
+  become: true
+  
+  # 'gather_facts: true' collects system information before executing tasks
+  # Facts include things like OS version, IP addresses, and hardware info
+  # These can be referenced in tasks using variables like {{ ansible_distribution }}
+  gather_facts: true
+  
+  # Tasks are the core of a playbook - they define what actions to perform
+  tasks:
+ 
+  # This task runs the equivalent of 'apt-get update' to refresh package lists
+  # Similar to running 'sudo apt update' on Ubuntu/Debian
+  - name: Update all packages
+    ansible.builtin.apt:
+      # 'update_cache: yes' tells Ansible to update the local package cache
+      # This ensures you have the latest information about available packages
+      update_cache: yes
+  
+  # This task upgrades all packages to their latest versions
+  # Similar to running 'sudo apt-get dist-upgrade' on Ubuntu/Debian
+  - name: Upgrade all packages
+    ansible.builtin.apt:
+      # 'upgrade: dist' performs a distribution upgrade (more comprehensive than 'yes')
+      # Options are: yes, safe, full, dist (in increasing order of aggressiveness)
+      upgrade: dist
+ 
+  # Install nginx web server on the target node
+  - name: Install and run nginx web server on target node
+    # The 'apt' module is used to manage packages on Debian-based systems
+    # 'pkg=nginx' specifies the package to install
+    # 'state=present' ensures the package is installed but doesn't upgrade it if already installed
+    # Alternative states: latest (installed and updated), absent (removed)
+    apt: pkg=nginx state=present
+ 
+  # Configure nginx to proxy requests to the Node.js application
+  - name: Configure Nginx proxy settings
+    # 'ansible.builtin.shell' runs a command through the shell, which allows features like redirection
+    # This is using 'sed' to replace line 51 in the nginx default config with a proxy_pass directive
+    ansible.builtin.shell: sudo sed -i "51c proxy_pass http://127.0.0.1:3000;" /etc/nginx/sites-available/default
+  
+  # Restart nginx to apply the configuration changes
+  - name: Restart Nginx to apply new configuration
+    # The 'service' module manages system services (start, stop, restart, etc.)
+    ansible.builtin.service:
+      # 'name' specifies which service to manage
+      name: nginx
+      # 'state: restarted' ensures the service is restarted, regardless of its current state
+      # Other states: started, stopped, reloaded
+      state: restarted
+  
+  # Ensure nginx starts automatically when the system boots
+  - name: Enable nginx on startup
+    ansible.builtin.service:
+      name: nginx
+      # 'enabled: yes' configures the service to start at boot time (creates appropriate symlinks)
+      enabled: yes
+      # 'state: started' ensures the service is running now
+      # This is redundant after the restart above, but makes the playbook more robust
+      state: started
+  
+  # Make sure Git is installed for cloning the repository
+  - name: Ensure Git is installed
+    ansible.builtin.apt:
+      name: git
+      # 'state: present' ensures git is installed but doesn't upgrade it if already present
+      state: present
+      # 'update_cache: yes' updates the package list before trying to install
+      # This is like running 'apt update' followed by 'apt install git'
+      update_cache: yes
+  
+  # Clone the application repository from GitHub
+  - name: Clone GitHub repo
+    # The 'git' module manages git repositories
+    ansible.builtin.git:
+      # 'repo' specifies the repository URL
+      repo: https://github.com/JsonRwson/Sparta-test-app.git
+      # 'dest' is where the repository will be cloned to on the target system
+      dest: /home/ubuntu/Sparta-test-app
+      # 'version' specifies which branch, tag, or commit to checkout
+      # 'main' is the default branch for this repository
+      version: main
+  
+  # Add the NodeSource GPG key to verify package signatures
+  - name: Add NodeSource GPG key
+    # 'apt_key' manages APT package signing keys
+    ansible.builtin.apt_key:
+      # 'url' specifies where to download the key from
+      url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+      # 'state: present' ensures the key is added to the keyring
+      state: present
+ 
+  # Add the NodeSource repository for Node.js 20.x
+  - name: Add NodeJS to apt
+    # 'apt_repository' manages APT repositories in sources.list files
+    ansible.builtin.apt_repository:
+      # 'repo' defines the repository source line
+      # {{ ansible_distribution_release }} is a variable from gather_facts that contains
+      # the target OS release name (e.g., focal, jammy, etc.)
+      repo: "deb https://deb.nodesource.com/node_20.x {{ ansible_distribution_release }} main"
+      # 'state: present' ensures the repo is added to sources.list
+      state: present
+      # 'update_cache: yes' updates the package lists after adding the repository
+      update_cache: yes
+  
+  # Install Node.js from the repository we just added
+  - name: Install NodeJS
+    ansible.builtin.apt:
+      name: nodejs
+      state: present
+      # 'update_cache: yes' refreshes the package index again before installation
+      update_cache: yes
+ 
+  # Install PM2 process manager globally using npm
+  - name: Install pm2
+    # 'command' executes a command without going through the shell
+    # This runs 'npm install -g pm2' to install PM2 globally
+    ansible.builtin.command: npm install -g pm2
+    args:
+      # 'creates' makes this task idempotent - it won't run if the specified file exists
+      # This prevents reinstalling PM2 if it's already installed
+      creates: /usr/bin/pm2
+  
+  # Install npm dependencies for the application
+  - name: npm install
+    ansible.builtin.shell:
+      # 'cmd' specifies the command to run
+      cmd: npm install
+      # 'chdir' changes to this directory before executing the command
+      # This runs 'npm install' in the app directory of the cloned repository
+      chdir: /home/ubuntu/Sparta-test-app/app
+  
+  # Kill any existing PM2 processes to ensure a clean start
+  - name: Kill any pm2 processes already running
+    ansible.builtin.shell:
+      # This stops and removes all applications managed by PM2
+      cmd: pm2 kill
+      chdir: /home/ubuntu/Sparta-test-app/app
+  
+  # Start the Node.js application using PM2
+  - name: Start the Node.js app with pm2
+    ansible.builtin.shell:
+      # 'pm2 start app.js' runs the application with the PM2 process manager
+      # PM2 keeps the app running and can restart it if it crashes
+      cmd: pm2 start app.js
+      # Execute this command in the application directory
+      chdir: /home/ubuntu/Sparta-test-app/app
