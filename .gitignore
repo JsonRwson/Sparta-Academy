@@ -1,4 +1,9 @@
+# Terraform state files
 *.tfstate
 *.tfstate.backup
 
 .terraform
+
+# Terraform variable files
+variables.tf
+*.tfvars
