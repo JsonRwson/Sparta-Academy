@@ -148,6 +148,8 @@ To disable the "known hosts" prompt when using SSH add this line under defaults:
 
 [Playbooks](https://docs.ansible.com/ansible/latest/getting_started/get_started_playbook.html)
 
+[Built in modules](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/index.html)
+
 Playbooks are YAML files that define a series of tasks to be executed on specified hosts.
 <br>Unlike ad-hoc commands, playbooks are reusable, structured, and allow for more complex logic such as conditionals, loops, handlers, etc.
 

@@ -176,8 +176,45 @@ Creating custom images allows us to package our application with specific config
 7. Run your new image:
    `docker run -d -p 80:80 my_website_from_image`
 
-8. Tag for Docker Hub (username required):
+8. Log in to DockerHub via CLI
+   `docker login`
+
+9.  Tag for Docker Hub (username required):
    `docker commit <container_id> uname/docker_test_website:latest`
 
-9. Push to Docker Hub:
+10. Push to Docker Hub:
    `docker push uname/docker_test_website:latest`
+
+## Automating Creating Docker Images - Dockerfiles
+
+Now we use a Dockerfile to automate needing to use a terminal and input commands
+<br>This allows us to put the container in the desired state to create an image from
+
+A Dockerfile is a text file containing instructions for building a Docker image
+<br>It defines the base image, copies files, installs dependencies, and sets up the environment for running a containerized application
+<br><br>Essentially, it's a blueprint for creating a Docker image
+
+```Dockerfile
+FROM nginx:alpine-slim
+COPY index.html /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+`FROM nginx:alpine-slim`
+<br>Sets the base image for the Docker image you're building
+<br>Alpine-slim is a variant of the nginx image that’s based on Alpine Linux and is much slimmer in size
+
+
+`COPY index.html /usr/share/nginx/html`
+<br>Copies the local website homepage into the container at the correct path
+
+
+`EXPOSE 80`
+<br>A declaration that the container will listen on port 80
+
+
+`CMD ["nginx", "-g", "daemon off;"]`
+<br>"nginx" runs the nginx web server
+<br>"-g", "daemon off;" tells nginx to run in the foreground
+<br>If nginx ran in the background ("daemonized"), the container would think the process was done and shut down
